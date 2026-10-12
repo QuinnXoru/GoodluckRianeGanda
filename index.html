@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Good Luck, Riane! 🌸✨</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path fill='%23ff1493' d='M50 88.7L14.3 53C3.6 42.3 3.6 25 14.3 14.3s28-10.7 35.7 0L50 19.6l5.7-5.3c10.7-10.7 28-10.7 38.7 0s10.7 28 0 38.7L50 88.7z'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --pink-primary: #ff69b4;
+      --pink-deep: #ff1493;
+      --pink-soft: #ffb6c1;
+      --pink-light: #fff0f5;
+      --pink-glow: rgba(255, 105, 180, 0.4);
+      --glass-bg: rgba(255, 255, 255, 0.82);
+      --glass-border: rgba(255, 182, 193, 0.7);
+      --text-dark: #8b0046;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffe4e1 0%, #ffc0cb 50%, #ffb6c1 100%);
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem 1.5rem;
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    header {
+      text-align: center;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 3px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      box-shadow: 0 15px 35px var(--pink-glow);
+      animation: floatBanner 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes floatBanner {
+      0% { transform: translateY(0px) rotate(-0.5deg); }
+      100% { transform: translateY(-10px) rotate(0.5deg); }
+    }
+
+    h1 {
+      font-family: 'Pacifico', cursive;
+      font-size: 3.2rem;
+      color: var(--pink-deep);
+      text-shadow: 3px 3px 0px #ffffff, 5px 5px 15px rgba(255, 20, 147, 0.3);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.25rem;
+      color: #d81b60;
+      letter-spacing: 0.5px;
+    }
+
+    .section-title {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.8rem;
+      color: var(--text-dark);
+      text-shadow: 1px 1px 0px #fff;
+      text-align: center;
+    }
+
+    .polaroid-wall {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    .polaroid-card {
+      background: #ffffff;
+      padding: 12px 12px 25px 12px;
+      border-radius: 4px;
+      box-shadow: 0 10px 25px rgba(255, 20, 147, 0.2);
+      width: 240px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .polaroid-card::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      width: 60px;
+      height: 20px;
+      background: rgba(255, 182, 193, 0.6);
+      border-radius: 2px;
+      backdrop-filter: blur(2px);
+    }
+
+    .polaroid-card:nth-child(1) { transform: rotate(-4deg); }
+    .polaroid-card:nth-child(2) { transform: rotate(2deg); }
+    .polaroid-card:nth-child(3) { transform: rotate(-3deg); }
+
+    .polaroid-card:hover {
+      transform: scale(1.08) rotate(0deg) !important;
+      box-shadow: 0 15px 35px rgba(255, 20, 147, 0.4);
+      z-index: 20;
+    }
+
+    .polaroid-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 2px;
+      background-color: #fff0f5;
+    }
+
+    .polaroid-caption {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.1rem;
+      color: #d81b60;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .gashapon-box {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border: 3px solid #ffb6c1;
+      border-radius: 25px;
+      padding: 2rem;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .fortune-display {
+      background: #fff0f5;
+      border: 2px dashed #ff69b4;
+      border-radius: 20px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 500px;
+      min-height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      color: var(--pink-deep);
+      line-height: 1.6;
+      box-shadow: inset 0 2px 8px rgba(255, 105, 180, 0.1);
+    }
+
+    .btn {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.3rem;
+      padding: 0.9rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      outline: none;
+      background: linear-gradient(45deg, #ff1493, #ff69b4);
+      color: white;
+      border: 2px solid #fff;
+      box-shadow: 0 8px 25px rgba(255, 20, 147, 0.4);
+    }
+
+    .btn:hover {
+      transform: scale(1.08) rotate(-1deg);
+      box-shadow: 0 12px 30px rgba(255, 20, 147, 0.6);
+    }
+
+    .checklist-container {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      border: 3px solid #ffb6c1;
+      border-radius: 25px;
+      padding: 2rem;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: #fff0f5;
+      padding: 1rem 1.2rem;
+      border-radius: 15px;
+      border: 1px solid #ffb6c1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .checklist-item:hover {
+      background: #ffffff;
+      transform: translateX(5px);
+    }
+
+    .checkbox {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      border: 2px solid var(--pink-deep);
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1rem;
+      color: white;
+      transition: all 0.2s;
+    }
+
+    .checklist-item.checked .checkbox {
+      background: var(--pink-deep);
+    }
+
+    .checklist-text {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.1rem;
+      color: #6a040f;
+    }
+
+    .checklist-item.checked .checklist-text {
+      text-decoration: line-through;
+      opacity: 0.7;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 850px;
+    }
+
+    .gallery-card {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 1rem;
+      border: 2px solid #ffb6c1;
+      box-shadow: 0 8px 20px rgba(255, 105, 180, 0.15);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(255, 20, 147, 0.3);
+      border-color: var(--pink-deep);
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 15px;
+      background-color: #fff0f5;
+    }
+
+    .gallery-caption {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 1.2rem;
+      color: #d81b60;
+      text-align: center;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 105, 180, 0.5);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      border: 4px solid var(--pink-deep);
+      border-radius: 30px;
+      padding: 2.5rem 2rem;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(255, 20, 147, 0.5);
+      transform: scale(0.7);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-family: 'Pacifico', cursive;
+      font-size: 2.4rem;
+      color: var(--pink-deep);
+    }
+
+    .modal-img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 4px solid #ffb6c1;
+      box-shadow: 0 5px 20px rgba(255, 105, 180, 0.35);
+      background-color: #fff;
+    }
+
+    .modal-text {
+      font-size: 1.15rem;
+      color: var(--text-dark);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .sound-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ffffff;
+      border: 2px solid var(--pink-primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      z-index: 50;
+      transition: transform 0.2s;
+    }
+
+    .sound-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2.4rem; }
+      .btn { font-size: 1.1rem; padding: 0.8rem 1.8rem; }
+      .polaroid-card { width: 100%; max-width: 280px; }
+      .gallery-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particleCanvas"></canvas>
+
+  <button class="sound-btn" id="soundBtn" title="Toggle Sound Effects">🔔</button>
+
+  <div class="container">
+    
+    <header>
+      <h1>Good Luck, Riane Ganda!! 🌸✨</h1>
+      <p class="subtitle">Cheering You On Every Step Of The Way!</p>
+    </header>
+
+    <h2 class="section-title">Riane's Cute and Gorgeous Photo Wall 📸🩷</h2>
+    <div class="polaroid-wall">
+      <div class="polaroid-card">
+        <img class="polaroid-img" src="riane1.jpg" alt="Riane Photo 1">
+        <div class="polaroid-caption">So pretty! ✨</div>
+      </div>
+      <div class="polaroid-card">
+        <img class="polaroid-img" src="riane2.jpg" alt="Riane Photo 2">
+        <div class="polaroid-caption">So Bright! 🌟</div>
+      </div>
+      <div class="polaroid-card">
+        <img class="polaroid-img" src="riane3.jpg" alt="Riane Photo 3">
+        <div class="polaroid-caption">Always Capable 🩷</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Fortune Capsule Machine</h2>
+    <div class="gashapon-box">
+      <div class="fortune-display" id="fortuneDisplay">
+        Click the button below to draw your daily good luck charm!
+      </div>
+      <button class="btn" id="drawBtn">Pull Fortune Capsule!</button>
+    </div>
+
+    <h2 class="section-title">Riane Ganda's Power-Up Checklist</h2>
+    <div class="checklist-container">
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="checkbox"></div>
+        <div class="checklist-text">🌸 Take a deep breath & stay confident, you are intelligent :3</div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="checkbox"></div>
+        <div class="checklist-text">💧 Drink water & take small rest breaks when needed po ha</div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="checkbox"></div>
+        <div class="checklist-text">🌟 Remember how prepared, gorgeous and smart you are</div>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <div class="checkbox"></div>
+        <div class="checklist-text">🍜 Do not forget to eat owkii</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Let us both work hard 🩷</h2>
+    <section class="gallery-grid">
+      <div class="gallery-card">
+        <img class="gallery-img" src="treat1.jpg" alt="Victory Treat 1">
+        <p class="gallery-caption">For our future</p>
+      </div>
+
+      <div class="gallery-card">
+        <img class="gallery-img" src="treat2.jpg" alt="Victory Treat 2">
+        <p class="gallery-caption">For your reward</p>
+      </div>
+
+      <div class="gallery-card">
+        <img class="gallery-img" src="treat3.jpg" alt="Victory Treat 3">
+        <p class="gallery-caption">For our future pet together</p>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+      <h2 class="modal-title">READY KANA GANDAAA</h2>
+      <img class="modal-img" src="riane-popup.jpg" alt="Riane Celebration">
+      <p class="modal-text">You're all set, powered up, and I know you will ace that exam. I will support you always and cheer for you!! :3 🩷</p>
+      <button class="btn" onclick="closeModal()">Goodluck Ganda!!</button>
+    </div>
+  </div>
+
+  <script>
+    let soundEnabled = true;
+    const soundBtn = document.getElementById('soundBtn');
+
+    soundBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      soundBtn.textContent = soundEnabled ? '🔔' : '🔕';
+    });
+
+    function playTone(freq, type = 'sine', duration = 0.2) {
+      if (!soundEnabled) return;
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+      }
+    }
+
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + 20;
+        this.size = Math.random() * 15 + 10;
+        this.speedY = Math.random() * 1.5 + 0.8;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
+        this.opacity = Math.random() * 0.6 + 0.3;
+        this.color = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffffff'][Math.floor(Math.random() * 4)];
+        this.type = Math.random() > 0.4 ? 'heart' : 'sparkle';
+      }
+
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        if (this.y < -30) this.reset();
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+
+        if (this.type === 'heart') {
+          ctx.beginPath();
+          const topCurveHeight = this.size * 0.3;
+          ctx.moveTo(this.x, this.y + topCurveHeight);
+          ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + topCurveHeight);
+          ctx.bezierCurveTo(this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2, this.x, this.y + this.size, this.x, this.y + this.size);
+          ctx.bezierCurveTo(this.x, this.y + (this.size + topCurveHeight) / 2, this.x + this.size / 2, this.y + topCurveHeight, this.x + this.size / 2, this.y + topCurveHeight);
+          ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + topCurveHeight);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size / 4, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+
+    for (let i = 0; i < 35; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    const fortunes = [
+      "🌸 'You are stronger and smarter than you think! Trust yourself today!! :3.'",
+      "✨ '100% Guaranteed Success Boost Activated! Go get 'em, Riane Ganda!'",
+      "💖 'Remember: Mistakes are just stepping stones to greatness. Take it easy!'",
+      "🎀 'Sending you a giant virtual hug & maximum good luck energy!'",
+      "🌷 'Take a deep breath. You are fully capable of achieving your goals! Matalino kana, maganda kapa!!'"
+    ];
+
+    const drawBtn = document.getElementById('drawBtn');
+    const fortuneDisplay = document.getElementById('fortuneDisplay');
+
+    drawBtn.addEventListener('click', () => {
+      playTone(600, 'triangle', 0.15);
+      fortuneDisplay.style.opacity = '0.3';
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * fortunes.length);
+        fortuneDisplay.textContent = fortunes[randomIndex];
+        fortuneDisplay.style.opacity = '1';
+        playTone(783.99, 'sine', 0.2);
+      }, 200);
+    });
+
+    function toggleCheck(element) {
+      playTone(523.25, 'sine', 0.1);
+      element.classList.toggle('checked');
+      const checkbox = element.querySelector('.checkbox');
+      checkbox.textContent = element.classList.contains('checked') ? '✓' : '';
+
+      const allItems = document.querySelectorAll('.checklist-item');
+      const checkedItems = document.querySelectorAll('.checklist-item.checked');
+
+      if (allItems.length === checkedItems.length) {
+        triggerCelebration();
+      }
+    }
+
+    function triggerCelebration() {
+      playTone(523.25, 'sine', 0.2);
+      setTimeout(() => playTone(659.25, 'sine', 0.2), 150);
+      setTimeout(() => playTone(783.99, 'sine', 0.3), 300);
+
+      const end = Date.now() + (2.5 * 1000);
+      const colors = ['#ff69b4', '#ff1493', '#ffb6c1', '#ffffff'];
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+
+      document.getElementById('modalOverlay').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
